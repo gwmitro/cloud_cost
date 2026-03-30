@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Advanced Cloud Cost Calculator</title>
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- jsPDF -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card: rgba(255,255,255,0.05);
+      --text: #ffffff;
+      --accent: #38bdf8;
+    }
+
+    body.light {
+      --bg: #f1f5f9;
+      --card: #ffffff;
+      --text: #000000;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      transition: 0.3s;
+    }
+
+    .container {
+      width: 400px;
+      padding: 25px;
+      border-radius: 20px;
+      background: var(--card);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+      animation: fadeIn 1s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px);} 
+      to { opacity: 1; transform: translateY(0);} 
+    }
+
+    h1 { text-align: center; margin-bottom: 15px; color: var(--accent); }
+
+    label { display: block; margin-top: 10px; }
+
+    input {
+      width: 100%; padding: 10px; margin-top: 5px;
+      border-radius: 10px; border: none;
+      background: rgba(255,255,255,0.1); color: var(--text);
+    }
+
+    button {
+      width: 100%; padding: 12px; margin-top: 15px;
+      border: none; border-radius: 10px;
+      background: var(--accent); cursor: pointer;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    button:hover { transform: scale(1.05); }
+
+    .result { margin-top: 15px; display: none; }
+
+    canvas { margin-top: 20px; }
+
+    .toggle {
+      position: absolute; top: 20px; right: 20px;
+      cursor: pointer; font-size: 14px;
+    }
+
+    table {
+      width: 100%; margin-top: 20px; border-collapse: collapse;
+    }
+
+    td, th {
+      padding: 8px; text-align: center; border-bottom: 1px solid #ccc;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="toggle" onclick="toggleMode()">🌗 Toggle Mode</div>
+
+<div class="container">
+  <h1>Cloud Cost Calculator</h1>
+
+  <label>Storage (GB)</label>
+  <input type="number" id="storage" />
+
+  <label>Compute Hours</label>
+  <input type="number" id="compute" />
+
+  <label>Data Transfer (GB)</label>
+  <input type="number" id="transfer" />
+
+  <button onclick="calculate()">Calculate</button>
+  <button onclick="downloadPDF()">Download PDF</button>
+
+  <div class="result" id="result">
+    <p id="output"></p>
+  </div>
+
+  <canvas id="chart"></canvas>
+
+  <h3 style="margin-top:20px">Platform Comparison</h3>
+  <table>
+    <tr><th>Platform</th><th>Pricing</th><th>Performance</th></tr>
+    <tr><td>AWS</td><td>Medium</td><td>High</td></tr>
+    <tr><td>Azure</td><td>Medium</td><td>High</td></tr>
+    <tr><td>GCP</td><td>Low</td><td>Very High</td></tr>
+  </table>
+</div>
+
+<script>
+  let chart;
+
+  function calculate() {
+    let s = +document.getElementById('storage').value || 0;
+    let c = +document.getElementById('compute').value || 0;
+    let t = +document.getElementById('transfer').value || 0;
+
+    let sc = s * 2;
+    let cc = c * 10;
+    let tc = t * 5;
+    let total = sc + cc + tc;
+
+    document.getElementById('output').innerText =
+      `Storage: ₹${sc}, Compute: ₹${cc}, Transfer: ₹${tc}, Total: ₹${total}`;
+
+    document.getElementById('result').style.display = 'block';
+
+    if (chart) chart.destroy();
+
+    let ctx = document.getElementById('chart');
+    chart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['Storage', 'Compute', 'Transfer'],
+        datasets: [{ data: [sc, cc, tc] }]
+      }
+    });
+  }
+
+  function toggleMode() {
+    document.body.classList.toggle('light');
+  }
+
+  function downloadPDF() {
+    const { jsPDF } = window.jspdf;
+    let doc = new jsPDF();
+    let text = document.getElementById('output').innerText || 'No data';
+    doc.text('Cloud Cost Report', 10, 10);
+    doc.text(text, 10, 20);
+    doc.save('report.pdf');
+  }
+</script>
+
+</body>
+</html>
