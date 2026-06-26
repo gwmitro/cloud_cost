@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Snake Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Start Screen -->
+    <div id="startScreen" class="screen active">
+        <div class="start-container">
+            <h1 class="game-title">
+                <span class="title-letter">S</span>
+                <span class="title-letter">N</span>
+                <span class="title-letter">A</span>
+                <span class="title-letter">K</span>
+                <span class="title-letter">E</span>
+            </h1>
+            
+            <div class="difficulty-selector">
+                <p>Select Difficulty:</p>
+                <div class="difficulty-buttons">
+                    <button class="difficulty-btn active" data-difficulty="easy">Easy</button>
+                    <button class="difficulty-btn" data-difficulty="medium">Medium</button>
+                    <button class="difficulty-btn" data-difficulty="hard">Hard</button>
+                </div>
+            </div>
+
+            <p class="high-score-display">High Score: <span id="startHighScore">0</span></p>
+
+            <button id="playBtn" class="play-btn">Play Game</button>
+
+            <p class="controls-info">
+                <span class="desktop-controls">Use Arrow Keys to Move</span>
+                <span class="mobile-controls">Use Mobile Buttons to Move</span>
+            </p>
+        </div>
+    </div>
+
+    <!-- Game Screen -->
+    <div id="gameScreen" class="screen">
+        <div class="game-header">
+            <div class="hud">
+                <div class="hud-item">
+                    <span class="hud-label">Score:</span>
+                    <span id="score" class="hud-value">0</span>
+                </div>
+                <div class="hud-item">
+                    <span class="hud-label">High Score:</span>
+                    <span id="highScore" class="hud-value">0</span>
+                </div>
+                <div class="hud-item">
+                    <span class="hud-label">Speed:</span>
+                    <span id="speed" class="hud-value">1x</span>
+                </div>
+            </div>
+
+            <button id="pauseBtn" class="pause-btn">Pause</button>
+        </div>
+
+        <div class="game-container">
+            <canvas id="gameCanvas" width="400" height="400"></canvas>
+        </div>
+
+        <!-- Mobile Controls -->
+        <div class="mobile-controls-container">
+            <button class="control-btn" id="upBtn">▲</button>
+            <div class="control-row">
+                <button class="control-btn" id="leftBtn">◄</button>
+                <button class="control-btn" id="downBtn">▼</button>
+                <button class="control-btn" id="rightBtn">►</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Over Screen -->
+    <div id="gameOverScreen" class="screen">
+        <div class="game-over-container">
+            <h2 class="game-over-title">Game Over</h2>
+            
+            <div class="score-display">
+                <div class="score-item">
+                    <p class="score-label">Your Score</p>
+                    <p class="score-value" id="finalScore">0</p>
+                </div>
+                <div class="score-item">
+                    <p class="score-label">High Score</p>
+                    <p class="score-value" id="finalHighScore">0</p>
+                </div>
+            </div>
+
+            <p id="newHighScoreMessage" class="new-high-score-msg">New High Score! 🎉</p>
+
+            <div class="game-stats">
+                <p>Snake Length: <span id="snakeLength">0</span></p>
+                <p>Difficulty: <span id="difficultyDisplay">Easy</span></p>
+            </div>
+
+            <button id="restartBtn" class="restart-btn">Play Again</button>
+            <button id="mainMenuBtn" class="menu-btn">Main Menu</button>
+        </div>
+    </div>
+
+    <!-- Pause Screen -->
+    <div id="pauseScreen" class="screen">
+        <div class="pause-container">
+            <h2 class="pause-title">Game Paused</h2>
+            <p class="pause-subtitle">Press Resume or hit any key to continue</p>
+            
+            <button id="resumeBtn" class="resume-btn">Resume</button>
+            <button id="pauseMenuBtn" class="menu-btn">Main Menu</button>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>
